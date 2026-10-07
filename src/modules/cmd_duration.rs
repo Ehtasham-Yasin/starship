@@ -29,6 +29,10 @@ pub fn module<'a>(context: &'a Context) -> Option<Module<'a>> {
 
     let parsed = StringFormatter::new(config.format).and_then(|formatter| {
         formatter
+            .map_meta(|variable, _| match variable {
+                "symbol" => Some(config.symbol),
+                _ => None,
+            })
             .map_style(|variable| match variable {
                 "style" => Some(Ok(config.style)),
                 _ => None,
@@ -192,5 +196,47 @@ mod tests {
 
         let expected = Some(format!("underwent {} ", Color::Yellow.bold().paint("5s")));
         assert_eq!(expected, actual);
+    }
+
+    #[test]
+    fn default_symbol_in_custom_format() {
+        let actual = ModuleRenderer::new("cmd_duration")
+            .config(toml::toml! {
+                [cmd_duration]
+                format = "[$symbol$duration]($style) "
+            })
+            .cmd_duration(5000)
+            .collect();
+
+        let expected = Some(format!("{} ", Color::Yellow.bold().paint("⌛ 5s")));
+        assert_eq!(expected, actual);
+    }
+
+    #[test]
+    fn custom_symbol_in_custom_format() {
+        let actual = ModuleRenderer::new("cmd_duration")
+            .config(toml::toml! {
+                [cmd_duration]
+                symbol = "time: "
+                format = "[$symbol$duration]($style) "
+            })
+            .cmd_duration(5000)
+            .collect();
+
+        let expected = Some(format!("{} ", Color::Yellow.bold().paint("time: 5s")));
+        assert_eq!(expected, actual);
+    }
+
+    #[test]
+    fn symbol_respects_min_time() {
+        let actual = ModuleRenderer::new("cmd_duration")
+            .config(toml::toml! {
+                [cmd_duration]
+                format = "[$symbol$duration]($style) "
+            })
+            .cmd_duration(1000)
+            .collect();
+
+        assert_eq!(None, actual);
     }
 }

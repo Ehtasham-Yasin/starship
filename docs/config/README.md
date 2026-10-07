@@ -919,6 +919,7 @@ running `eval $(starship init $0)`, and then proceed as normal.
 | `min_time`             | `2_000`                       | Shortest duration to show time for (in milliseconds).                                                                                                             |
 | `show_milliseconds`    | `false`                       | Show milliseconds in addition to seconds for the duration.                                                                                                        |
 | `format`               | `'took [$duration]($style) '` | The format for the module.                                                                                                                                        |
+| `symbol`               | `'⌛ '`                        | The symbol used in the format.                                                                                                                                    |
 | `style`                | `'bold yellow'`               | The style for the module.                                                                                                                                         |
 | `disabled`             | `false`                       | Disables the `cmd_duration` module.                                                                                                                               |
 | `show_notifications`   | `false`                       | Show desktop notifications when command completes.                                                                                                                |
@@ -930,6 +931,7 @@ running `eval $(starship init $0)`, and then proceed as normal.
 | Variable | Example  | Description                             |
 | -------- | -------- | --------------------------------------- |
 | duration | `16m40s` | The time it took to execute the command |
+| symbol   | `⌛ `    | Mirrors the value of option `symbol`    |
 | style\*  |          | Mirrors the value of option `style`     |
 
 *: This variable can only be used as a part of a style string
@@ -942,6 +944,14 @@ running `eval $(starship init $0)`, and then proceed as normal.
 [cmd_duration]
 min_time = 500
 format = 'underwent [$duration](bold yellow)'
+```
+
+To include a symbol, add `$symbol` to the format. The default format does not display it:
+
+```toml
+[cmd_duration]
+format = '[$symbol$duration]($style) '
+symbol = '⌛ '
 ```
 
 ## Conda

@@ -10,6 +10,7 @@ use serde::{Deserialize, Serialize};
 pub struct CmdDurationConfig<'a> {
     pub min_time: i64,
     pub format: &'a str,
+    pub symbol: &'a str,
     pub style: &'a str,
     pub show_milliseconds: bool,
     pub disabled: bool,
@@ -25,6 +26,7 @@ impl Default for CmdDurationConfig<'_> {
         Self {
             min_time: 2_000,
             format: "took [$duration]($style) ",
+            symbol: "⌛ ",
             show_milliseconds: false,
             style: "yellow bold",
             disabled: false,

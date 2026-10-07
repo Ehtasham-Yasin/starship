@@ -274,6 +274,7 @@
       "default": {
         "min_time": 2000,
         "format": "took [$duration]($style) ",
+        "symbol": "⌛ ",
         "style": "yellow bold",
         "show_milliseconds": false,
         "disabled": false,
@@ -2581,6 +2582,10 @@
         "format": {
           "type": "string",
           "default": "took [$duration]($style) "
+        },
+        "symbol": {
+          "type": "string",
+          "default": "⌛ "
         },
         "style": {
           "type": "string",
